@@ -14,10 +14,10 @@
 			.then(function(response) {
 
 				// Get the first 5 albums
-				albumData = extractSubArray(response.data, 5);
+				albumData = extractSubArray(response.data, 5); // [{}, {}, {}, {}, {}]
 
 				// Extract album IDs to construct photos GET call
-				var albumIDs = albumData.map(extractID);
+				var albumIDs = albumData.map(extractID); // [1, 2, 3, 4, 5]
 
 				// Build photos GET call
 				var photosUrlParamString = albumIDs.reduce(buildUrl, photosBaseURL);
