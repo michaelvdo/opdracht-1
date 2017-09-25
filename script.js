@@ -4,21 +4,23 @@
 	// Semi-global variables
 	var albumData = {},
 			photosData = {},
-			albumList = document.querySelector('.albums');
+			albumList = document.querySelector('.albums'),
+			albumBaseURL = 'https://jsonplaceholder.typicode.com/albums',
+			photosBaseURL = 'https://jsonplaceholder.typicode.com/photos?';
 
 	function fetchData() {
 		// fetch albums
-		axios.get('https://jsonplaceholder.typicode.com/albums')
+		axios.get(albumBaseURL)
 			.then(function(response) {
 
 				// Get the first 5 albums
 				albumData = extractSubArray(response.data, 5);
 
-				// Extract album id's to construct photos GET call
+				// Extract album IDs to construct photos GET call
 				var albumIDs = albumData.map(extractID);
 
 				// Build photos GET call
-				var photosUrlParamString = albumIDs.reduce(buildUrl, 'https://jsonplaceholder.typicode.com/photos?');
+				var photosUrlParamString = albumIDs.reduce(buildUrl, photosBaseURL);
 
 				// Get the 5 photos matching the albums
 				axios.get(photosUrlParamString)
@@ -44,16 +46,15 @@
 			return obj.id;
 		}
 
-		function buildUrl(acc, current, index, array) {
-			var paramString = acc.toString() + 'id=' + current.toString();
-			paramString = paramString + ((index >= (array.length - 1)) ? '' : '&');
+		function buildUrl(accumulated, current, index, array) {
+			var paramString = accumulated + 'id=' + current,
+					ampersand = index >= (array.length - 1) ? '' : '&';
+			paramString += ampersand;
 			return paramString;
 		}
 	}
 
 	function appendDataToDOM() {
-		console.log(albumData);
-
 		albumData.forEach(addAlbumToDOM);
 
 		function addAlbumToDOM(obj, index) {
