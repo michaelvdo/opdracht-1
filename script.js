@@ -42,8 +42,8 @@
 	*/
 	function buildPhotosUrl(albums, baseURL) {
 		// Extract album IDs
-		var albumIDs = albums.map(function(obj) {
-			return obj.id;
+		var albumIDs = albums.map(function(album) {
+			return album.id;
 		});
 
 		// Add the album IDs as parameters to the url and return it
@@ -72,13 +72,13 @@
 	*/
 	function appendAlbumsToDOM(albums) {
 		var albumList = document.querySelector('.albums');
-		albums.forEach(function(obj) {
+		albums.forEach(function(album) {
 			var li = document.createElement('li'),
 					image = document.createElement('img'),
 					title = document.createElement('h2');
 
-			image.src = obj.url;
-			title.innerHTML = obj.title;
+			image.src = album.url;
+			title.innerHTML = album.title;
 
 			li.appendChild(image);
 			li.appendChild(title);
